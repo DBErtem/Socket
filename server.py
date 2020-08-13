@@ -3,6 +3,8 @@ from cv2 import cv2
 import pickle
 import numpy as np
 import struct
+import time
+import imutils
 
 HOST = '169.254.43.118'
 PORT = 20203
@@ -18,7 +20,6 @@ print(conn)
 print(addr)
 data = b""
 payload_size = struct.calcsize(">L")
-
 while True:
     while len(data) < payload_size:
         data += conn.recv(4096)
@@ -26,15 +27,17 @@ while True:
     data = data[payload_size:]
     
     msg_size = struct.unpack(">L", packed_msg_size)[0]
-    print("msg: ", msg_size)
+    print("msg:", msg_size)
 
-    while len(data) < msg_size:
+    while len(data) <= msg_size:
         data += conn.recv(4096)
-    print(data[-4:])
+    
     frame_data = data[:msg_size]
-    data = data[msg_size:-4]
-
+    data = data[msg_size:]
+    
+    print(data)
     frame = pickle.loads(frame_data, fix_imports=True, encoding="bytes")
     frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
+    frame = imutils.resize(frame,width=800)
     cv2.imshow("KAMERA", frame)
     cv2.waitKey(1)
