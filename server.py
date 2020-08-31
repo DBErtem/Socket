@@ -24,8 +24,14 @@ payload_size = struct.calcsize(">L")
 
 
 while True:
-    randomsayi = random.randint(5,10)
-    conn.send(bytes([randomsayi]))
+    xaxis = 11.571
+    yaxis = 234.567
+    zaxis = -345.678
+    xbytes = bytearray(struct.pack("3f", xaxis,yaxis,zaxis))
+
+    conn.send(xbytes)
+    #conn.send(bytes([xaxis,yaxis,zaxis]))
+
     #print(conn.recv(1024))
     
     while len(data) < payload_size:
@@ -42,6 +48,7 @@ while True:
     
     frame_data = data[:msg_size]
     data = data[msg_size:]
+    
     
     
     #print(data)
