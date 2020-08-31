@@ -6,6 +6,11 @@ import struct
 import time
 import imutils
 import random
+import pygame
+
+pygame.init()
+j = pygame.joystick.Joystick(0)
+j.init()
 
 HOST = '169.254.69.119'
 PORT = 20203
@@ -22,13 +27,25 @@ print(addr)
 data = b""
 payload_size = struct.calcsize(">L")
 
-
+leftxaxis = 0
+leftyaxis = 0
+rightxaxis = 0
+rightyaxis = 0
 while True:
-    
-    xaxis = 11.571
-    yaxis = 234.567
-    zaxis = -345.678
-    xbytes = bytearray(struct.pack("3f", xaxis,yaxis,zaxis))
+
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.JOYAXISMOTION:
+            if event.axis == 0:
+                leftxaxis = event.value
+            if event.axis == 1:
+                leftyaxis = event.value
+            if event.axis == 2:
+                rightxaxis = event.value
+            if event.axis == 3:
+                rightyaxis == event.value
+
+    xbytes = bytearray(struct.pack("4f", leftxaxis,leftyaxis,rightxaxis,rightyaxis))
 
     conn.send(xbytes)
     #conn.send(bytes([xaxis,yaxis,zaxis]))
