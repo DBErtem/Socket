@@ -24,12 +24,15 @@ time.sleep(0.2)
 while True:
     frame = vs.read()
     
-
     result, frame = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
     data = pickle.dumps(frame, 0)
     size = len(data)
     client_socket.sendall(struct.pack(">L", size) + data)
-    print(client_socket.recv(1024))
+    axis = struct.unpack("3f",client_socket.recv(1024))
+    xaxis = axis[0]
+    yaxis = axis[1]
+    zaxis = axis[2]
+    print(xaxis,yaxis,zaxis)
     
 cv2.destroyAllWindows()
 vs.stop()               
