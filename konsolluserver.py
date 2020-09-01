@@ -31,7 +31,8 @@ leftxaxis = 0
 leftyaxis = 0
 rightxaxis = 0
 rightyaxis = 0
-
+hatx = 0
+haty = 0
 while True:
     events = pygame.event.get()
     for event in events:
@@ -40,12 +41,25 @@ while True:
                 leftxaxis = event.value
             if event.axis == 1:
                 leftyaxis = event.value
-            if event.axis == 4:
+            if event.axis == 2:
                 rightxaxis = event.value
             if event.axis == 3:
                 rightyaxis = event.value
+        if event.type == pygame.JOYHATMOTION:
+            if event.value == (0,1):
+                haty = 1
+            elif event.value == (0,-1):
+                haty = -1
+            elif event.value == (1,0):
+                hatx = 1
+            elif event.value == (-1,0):
+                hatx = -1
+            if event.value == (0,0):
+                hatx = 0
+                haty = 0
+            
 
-    analogBytes = bytearray(struct.pack("4f", leftxaxis,leftyaxis,rightxaxis,rightyaxis))
+    analogBytes = bytearray(struct.pack("6f", leftxaxis,leftyaxis,rightxaxis,rightyaxis,hatx,haty))
 
     conn.send(analogBytes)
 
