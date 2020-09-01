@@ -31,8 +31,8 @@ leftxaxis = 0
 leftyaxis = 0
 rightxaxis = 0
 rightyaxis = 0
-while True:
 
+while True:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.JOYAXISMOTION:
@@ -40,15 +40,14 @@ while True:
                 leftxaxis = event.value
             if event.axis == 1:
                 leftyaxis = event.value
-            if event.axis == 2:
+            if event.axis == 4:
                 rightxaxis = event.value
             if event.axis == 3:
-                rightyaxis == event.value
+                rightyaxis = event.value
 
-    xbytes = bytearray(struct.pack("4f", leftxaxis,leftyaxis,rightxaxis,rightyaxis))
+    analogBytes = bytearray(struct.pack("4f", leftxaxis,leftyaxis,rightxaxis,rightyaxis))
 
-    conn.send(xbytes)
-    #conn.send(bytes([xaxis,yaxis,zaxis]))
+    conn.send(analogBytes)
 
     #print(conn.recv(1024))
     while len(data) < payload_size:
@@ -62,7 +61,6 @@ while True:
     
     while len(data) <= msg_size:
         data += conn.recv(4096)
-    
     
     frame_data = data[:msg_size]
     data = data[msg_size:]
