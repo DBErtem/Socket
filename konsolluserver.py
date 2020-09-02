@@ -33,7 +33,14 @@ rightxaxis = 0
 rightyaxis = 0
 hatx = 0
 haty = 0
+
 while True:
+    yuvarlak = 0
+    ucgen = 0
+    L1 = 0
+    R1 = 0
+    L2 = 0
+    R2 = 0
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.JOYAXISMOTION:
@@ -57,9 +64,22 @@ while True:
             if event.value == (0,0):
                 hatx = 0
                 haty = 0
+        if event.type == pygame.JOYBUTTONDOWN:
+            if j.get_button(1):
+                yuvarlak = 1
+            if j.get_button(2):
+                ucgen = 1
+            if j.get_button(4):
+                L1 = 1
+            if j.get_button(5):
+                R1 = 1
+            if j.get_button(6):
+                L2 = 1
+            if j.get_button(7):
+                R2 = 1
             
 
-    analogBytes = bytearray(struct.pack("6f", leftxaxis,leftyaxis,rightxaxis,rightyaxis,hatx,haty))
+    analogBytes = bytearray(struct.pack("12f", leftxaxis,leftyaxis,rightxaxis,rightyaxis,hatx,haty,yuvarlak,ucgen,L1,R1,L2,R2))
 
     conn.send(analogBytes)
 

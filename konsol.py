@@ -45,8 +45,8 @@ try:
             #     print(event.axis)
             #     #print(event.dict) = print(event.joy, event.axis, event.value)
                 
-            # if event.type == pygame.JOYBALLMOTION:
-            #     print(event.dict, event.joy, event.ball, event.rel)
+            if event.type == pygame.JOYBALLMOTION:
+                print(event.dict, event.joy, event.ball, event.rel)
             # if event.type == pygame.JOYBUTTONDOWN:
             #     print(event.dict, event.joy, event.button, 'pressed')
             # if event.type == pygame.JOYBUTTONUP:
@@ -54,6 +54,7 @@ try:
             
             if event.type == pygame.JOYHATMOTION:
                 print(event.dict)
+                
                 #print(event.dict) = print(event.joy, event.hat, event.value)
 
             # elif event.type == pygame.JOYBUTTONUP:
